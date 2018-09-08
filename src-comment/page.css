@@ -1,0 +1,15 @@
+.left {
+    float: right;
+    border: 1px solid black;
+    text-decoration: none;
+    color: #000;
+}
+
+.middle{
+    margin-left: 30px;
+    
+}
+.back{
+    background-color: white;
+    border: 1px solid;
+}
