@@ -209,6 +209,7 @@
     	                "from": "5ae1f088d37a442b749fc143",
     	                "to": "5ae1ddd99ca58023d82351ae",
     	                "content": "aa",
+    	                "chat_id": 'aaaaaaaaaaaaaaaa',
     	                "create_time": 1524757443374,
     	                "__v": 0
     	            }

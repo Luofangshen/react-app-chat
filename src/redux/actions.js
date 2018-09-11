@@ -1,13 +1,15 @@
 /*
 action 工厂函数
  */
-import {RECEVIEUSER,ERRORMSG, UPDATEUSER, TOGETUSER} from './action-types'
-import {reqRegister, reqLogin, reqUpdate, reqGetUser} from '../ajax/index'
+import {RECEVIEUSER,ERRORMSG, UPDATEUSER, TOGETUSER, LOGOUT, RECEVIEUSERLIST} from './action-types'
+import {reqRegister, reqLogin, reqUpdate, reqGetUser, reqGetUserList} from '../ajax/index'
 
-export const toRecevieUser = (data) => ({type: RECEVIEUSER, data})
-export const errorMsg = (data) => ({type: ERRORMSG, data})
-export const updateUser = (data) => ({type: UPDATEUSER, data})
-export const toGetUser = (data) => ({type: TOGETUSER, data})
+const toRecevieUser = (data) => ({type: RECEVIEUSER, data})
+const errorMsg = (data) => ({type: ERRORMSG, data})
+const updateUser = (data) => ({type: UPDATEUSER, data})
+const toGetUser = (data) => ({type: TOGETUSER, data})
+export const toLogOut = () => ({type: LOGOUT})
+const toRecevieUserList = (data) => ({type: RECEVIEUSERLIST, data})
 
 //注册异步action
 export const toRegisterAsync = (username, password) => {
@@ -54,6 +56,18 @@ export const toGetUserAsync = (cb) => {
     if (result.code === 0) {
       dispatch(toGetUser(result.data))
       cb()
+    } else {
+      dispatch(errorMsg(result.msg))
+    }
+  }
+}
+
+//异步获取用户列表信息
+export const toRecevieUserListAsync = () => {
+  return async dispatch => {
+    let result = await reqGetUserList()
+    if (result.code === 0) {
+      dispatch(toRecevieUserList(result.data))
     } else {
       dispatch(errorMsg(result.msg))
     }

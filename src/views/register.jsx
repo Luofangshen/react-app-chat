@@ -64,7 +64,7 @@ class Register extends Component {
           <i className='iconfont icon-xiaofuquanlogo01 login-logo' />
           <p>聊天你我他</p>
           <div className='container item'>
-            <i className='iconfont icon-yonghu tubiao' />
+            <i className='iconfont icon-wode tubiao' />
             <input type="text" placeholder='请输入注册用户名' maxLength={20} value={this.state.username}
                    onChange={this.handleChange} name='username'/>
           </div>
@@ -90,6 +90,6 @@ class Register extends Component {
 }
 
 export default connect(
-    state => ({user: state}),
+    state => ({user: state.userMsg}),
     {toRegisterAsync}
 )(Register)

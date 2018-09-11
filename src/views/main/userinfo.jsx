@@ -43,13 +43,13 @@ class UserInfo extends Component{
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.user.header) {
-      this.props.history.replace('/userlist')
+      this.props.history.replace('/message')
     }
   }
 
   componentDidMount () {
     if (this.props.user.header) {
-      this.props.history.replace('/userlist')
+      this.props.history.replace('/message')
     }
   }
   
@@ -87,6 +87,6 @@ class UserInfo extends Component{
 }
 
 export default connect(
-    state => ({user: state}),
+    state => ({user: state.userMsg}),
     {toUpdateAsync}
 )(UserInfo)

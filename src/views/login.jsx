@@ -59,7 +59,7 @@ class Login extends Component {
           <i className='iconfont icon-xiaofuquanlogo01 login-logo' />
           <p>聊天你我他</p>
           <div className='container item'>
-            <i className='iconfont icon-yonghu tubiao' />
+            <i className='iconfont icon-wode tubiao' />
             <input type="text" placeholder='用户名' name='username' maxLength={20} value={this.state.username}
                 onChange={this.handleChange}/>
           </div>
@@ -80,6 +80,6 @@ class Login extends Component {
 }
 
 export default connect(
-    state => ({user: state}),
+    state => ({user: state.userMsg}),
     {toLoginAsync}
 )(Login)
