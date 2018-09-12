@@ -1,16 +1,45 @@
 import React, {Component} from 'react'
-import io from 'socket.io-client'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {List, InputItem, NavBar, Icon} from 'antd-mobile'
+import PubSub from 'pubsub-js'
+
+import {toReadAsync, toReceiveChatAsync} from '../../redux/actions'
 
 class Chat extends Component {
   state = {
     content: ''
   }
 
+  componentDidMount () {
+    let fb = () => {
+      this.props.toReceiveChatAsync()
+    }
+    this.props.toReadAsync(this.props.match.params.id, fb)
+    document.documentElement.scrollTop = document.documentElement.scrollHeight - document.documentElement.clientHeight
+    window.pageYOffset =  document.documentElement.scrollHeight - document.documentElement.clientHeight
+    document.body.scrollTop = document.documentElement.scrollHeight - document.documentElement.clientHeight
+  }
+
+  componentWillUnmount () {
+      let fb = () => {
+        this.props.toReceiveChatAsync()
+      }
+      this.props.toReadAsync(this.props.match.params.id, fb)
+  }
+
+  componentDidUpdate () {
+    document.documentElement.scrollTop = document.documentElement.scrollHeight - document.documentElement.clientHeight
+    window.pageYOffset =  document.documentElement.scrollHeight - document.documentElement.clientHeight
+    document.body.scrollTop = document.documentElement.scrollHeight - document.documentElement.clientHeight
+
+  }
+
   static propTypes = {
-    user: PropTypes.object.isRequired
+    user: PropTypes.object.isRequired,
+    chat: PropTypes.object.isRequired,
+    toReadAsync: PropTypes.func.isRequired,
+    toReceiveChatAsync: PropTypes.func.isRequired
   }
 
   handleChange = (value) => {
@@ -19,23 +48,12 @@ class Chat extends Component {
     })
   }
 
-  componentDidMount () {
-    this.socket = io.connect('http://localhost:4001');
-    this.socket.on('receiveMsg', function (data) {
-      console.log(data);
-    });
-  }
-
-  componentWillUnmount () {
-    this.socket.disconnect()
-  }
-
   sendMsg = () => {
     let from = this.props.user._id
     let to = this.props.match.params.id
     let {content} = this.state
     if (content.trim()){
-      this.socket.emit('sendMsg', {from, to, content})
+      PubSub.publish('MSG', {from, to, content});
     }
     this.setState({
       content: ''
@@ -43,6 +61,16 @@ class Chat extends Component {
   }
 
   render () {
+    if (!this.props.chat.users) {
+      return null
+    }
+    let {chatMsgs} = this.props.chat
+    let {username, header} = this.props.chat.users[this.props.match.params.id]
+    let from = this.props.user._id
+    let to = this.props.match.params.id
+    let chat_id = [from, to].sort().join('_')
+    chatMsgs = chatMsgs.filter((chatMsg, index) => chatMsg.chat_id === chat_id)
+
 
     return (
         <div className='chat'>
@@ -54,37 +82,18 @@ class Chat extends Component {
               rightContent={[
                 <Icon key="1" type="ellipsis" />,
               ]}
-          >{this.props.user.username}</NavBar>
+          >{username}</NavBar>
           <div className='content'>
-            <p>11111</p>
-            <p>11111</p>
-            <p>11111</p>
-            <p>11111</p><p>11111</p><p>11111</p>
-            <p>11111</p>
-            <p>11111</p>
-            <p>11111</p>
-            <p>11111</p>
-            <p>11111</p>
-            <p>11111</p><p>11111</p><p>11111</p>
-            <p>11111</p>
-            <p>11111</p><p>11111</p>
-            <p>11111</p>
-            <p>11111</p>
-            <p>11111</p><p>11111</p><p>11111</p>
-            <p>11111</p>
-            <p>11111</p><p>11111</p>
-            <p>11111</p>
-            <p>11111</p>
-            <p>11111</p><p>11111</p><p>11111</p>
-            <p>11111</p>
-            <p>11111</p><p>11111</p>
-            <p>11111</p>
-            <p>11111</p>
-            <p>11111</p><p>11111</p><p>11111</p>
-            <p>11111</p>
-            <p>11111</p>
-
-
+            {
+              chatMsgs.map((chatMsg, index) => {
+                return (
+                    <div className={chatMsg.from === to ? 'chatContent left' : 'chatContent right'} key={index}>
+                      {chatMsg.from === to ? <img src={require(`../../images/headers/${header}.png`)} alt=""/> : <img src={require(`../../images/headers/${this.props.user.header}.png`)} alt=""/>}
+                      <p >{chatMsg.content}</p>
+                    </div>
+                )
+              })
+            }
           </div>
           <List className='inputItem'>
             <InputItem
@@ -102,6 +111,6 @@ class Chat extends Component {
 }
 
 export default connect(
-    state => ({user: state.userMsg}),
-    {}
+    state => ({user: state.userMsg, chat: state.chat}),
+    {toReadAsync, toReceiveChatAsync}
 )(Chat)
