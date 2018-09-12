@@ -5,7 +5,7 @@ import {Provider} from 'react-redux'
 
 import App from './components/app'
 import store from './redux/store'
-import './less/page.less'
+import './css/page.css'
 import './less/shipei'
 
 render((
