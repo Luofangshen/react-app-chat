@@ -1,5 +1,8 @@
 @rem: 16rem / 980;
-html,body{
+html{
+  height: 100%;
+}
+body{
   height: 100%;
 }
 
@@ -75,10 +78,10 @@ html,body{
     }
     input{
       border: none;
-      width: 260px;
-      height: 52px;
+      width: 80%;
+      height: 50px;
       box-sizing: border-box;
-      border-radius: 50px;
+      border-radius: 300px;
       padding: 0 0.7rem;
       background-color: rgba(255,255,255,.4);
       font-size: 0.6rem;
@@ -111,7 +114,7 @@ html,body{
   .navfooter-wrap{
     .nav-footer{
       width: 16rem;
-      height: 2.3rem;
+      height: 2.5rem;
       position: fixed;
       bottom: 0;
       display: flex;
@@ -147,7 +150,7 @@ html,body{
           font-size: 0.5rem;
         }
         i{
-          line-height: 1.5rem;
+          line-height: 1.9rem;
           font-size: 1.3rem;
         }
       }
@@ -177,6 +180,32 @@ html,body{
       left: 0;
       top: 0;
       z-index: 10;
+    }
+    .chatContent{
+      height: 2.5rem;
+      display: flex;
+      &.left{
+        flex-direction: row;
+      }
+      &.right{
+        flex-direction: row-reverse;
+      }
+      p{
+        width: inherit;
+        height: 1.5rem;
+        background-color: white;
+        font: .8rem/1.5rem '微软雅黑';
+        margin: 0.4rem;
+        border: 1px solid rgba(0,0,0,.5);
+        padding: 0 .2rem;
+        border-radius: .5rem;
+
+      }
+      img{
+        width: 2rem;
+        height: 2rem;
+        margin: 0 .2rem;
+      }
     }
   }
 

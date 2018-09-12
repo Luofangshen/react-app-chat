@@ -1,5 +1,19 @@
-    第一个React 项目
+    第一个React 移动端项目
     聊天的SPA软件，前后端分离
+
+    技术选型
+
+        前后端分离项目
+        前端主要使用 npm + webpack + react 全家桶 + ant-design mobile
+        后端主要使用 node + express + mongodb 快速搭建的后台应用
+        另外还使用了 PubSub   js-cookie  等库
+
+    运行
+    1. 需先保证运行了mongodb
+    2. 先运行 react-chat-serve (在另一个项目)
+    3. 接着直接运行本项目
+
+
 
     接口文档
     # 接口文档
@@ -232,5 +246,5 @@
 
 
 
-    技术选型
+
 

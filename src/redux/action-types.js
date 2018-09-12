@@ -7,4 +7,6 @@ export const UPDATEUSER = 'updateuser'
 export const TOGETUSER = 'togetuser'
 export const LOGOUT = 'logout'
 export const RECEVIEUSERLIST = 'recevieuserlist'
-
+export const RECEIVECHATLIST = 'receivechatlist'
+export const RECEIVEONECHAT = 'receiveonechat'
+export const READ = 'read'

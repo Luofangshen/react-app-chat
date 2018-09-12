@@ -1,7 +1,7 @@
 /*
 一堆reducer纯函数
  */
-import {RECEVIEUSER, ERRORMSG, UPDATEUSER, TOGETUSER, LOGOUT, RECEVIEUSERLIST} from './action-types'
+import {RECEVIEUSER, ERRORMSG, UPDATEUSER, TOGETUSER, LOGOUT, RECEVIEUSERLIST, RECEIVECHATLIST, RECEIVEONECHAT, READ} from './action-types'
 import {combineReducers} from 'redux'
 const initUser = {}
 
@@ -34,7 +34,25 @@ function userList(state=initUserList, action) {
   }
 }
 
+const initChat = {}
+function chat(state=initChat, action) {
+  switch (action.type) {
+    case RECEIVECHATLIST:
+      return {...state, ...action.data}
+    case LOGOUT:
+      return {}
+    case RECEIVEONECHAT:
+      const {chatMsgs} = state
+      return {...state, chatMsgs: [...chatMsgs, action.data]}
+    case READ:
+      return {...state, modify: action.data}
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   userMsg,
-  userList
+  userList,
+  chat
 })

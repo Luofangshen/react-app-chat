@@ -1,15 +1,18 @@
 /*
 action 工厂函数
  */
-import {RECEVIEUSER,ERRORMSG, UPDATEUSER, TOGETUSER, LOGOUT, RECEVIEUSERLIST} from './action-types'
-import {reqRegister, reqLogin, reqUpdate, reqGetUser, reqGetUserList} from '../ajax/index'
+import {RECEVIEUSER,ERRORMSG, UPDATEUSER, TOGETUSER, LOGOUT, RECEVIEUSERLIST, RECEIVECHATLIST, RECEIVEONECHAT, READ} from './action-types'
+import {reqRegister, reqLogin, reqUpdate, reqGetUser, reqGetUserList, reqChatMsg, reqRead} from '../ajax/index'
 
 const toRecevieUser = (data) => ({type: RECEVIEUSER, data})
 const errorMsg = (data) => ({type: ERRORMSG, data})
 const updateUser = (data) => ({type: UPDATEUSER, data})
 const toGetUser = (data) => ({type: TOGETUSER, data})
 export const toLogOut = () => ({type: LOGOUT})
+const toReceiveChat = (data) => ({type: RECEIVECHATLIST, data})
 const toRecevieUserList = (data) => ({type: RECEVIEUSERLIST, data})
+export const toReceiveOneChat = (data) => ({type: RECEIVEONECHAT, data})
+const toRead = (data) => ({type: READ, data})
 
 //注册异步action
 export const toRegisterAsync = (username, password) => {
@@ -70,6 +73,26 @@ export const toRecevieUserListAsync = () => {
       dispatch(toRecevieUserList(result.data))
     } else {
       dispatch(errorMsg(result.msg))
+    }
+  }
+}
+
+//异步获取用户聊天记录
+export const toReceiveChatAsync = () => {
+  return async dispatch => {
+    let result = await reqChatMsg()
+    if (result.code === 0) {
+      dispatch(toReceiveChat(result.data))
+    }
+  }
+}
+//修改已读数量
+export const toReadAsync = (from, fb) => {
+  return async dispatch => {
+    let result = await reqRead(from)
+    if (result.code === 0) {
+      dispatch(toRead(result.data))
+      fb()
     }
   }
 }
