@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+﻿import React, {Component} from 'react'
 import {Route, Switch} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import {connect} from 'react-redux'
@@ -26,8 +26,7 @@ class Main extends Component {
       PubSub.subscribe('MSG', (msg, data) => {
         this.socket.emit('sendMsg', data);
       });
-      this.socket.on('receiveMsg',(data) => {
-          // 逻辑
+      this.socket.on('receiveMsg',(data) => {      
         if (data.from === this.props.user._id || data.to === this.props.user._id) {
           this.props.toReceiveOneChat(data)
         } 
@@ -53,8 +52,11 @@ class Main extends Component {
     cb()
   }
 
-  componentWillUnmount () {
-    this.socket.disconnect()
+  componentWillUnmount() {
+	if (this.socket) {
+	this.socket.disconnect()
+	}
+    
   }
 
   static propTypes = {
