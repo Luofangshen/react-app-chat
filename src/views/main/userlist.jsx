@@ -14,35 +14,38 @@ class Userlist extends Component {
   }
   
   render () {
-    if (!this.props.userList[0]) {
-      return null
+    if (this.props.userList) {
+      let userList = this.props.userList.filter((user, index) => user.username !== this.props.user.username)
+      return (
+          <div>
+            <WhiteSpace />
+            <WingBlank size="lg">
+              {
+                userList.map((user, index) => {
+                  let header = user.header
+                  return (
+                      <div key={index}>
+                        <WhiteSpace size="lg" />
+                        <Card onClick={() => this.handleClick(user)}>
+                          <Card.Header
+                              title={user.username}
+                              thumb={header ? require(`../../images/headers/${header}.png`) : ''}
+                              extra={<i className='iconfont icon-arrow-right-copy' style={{fontSize: '1rem'}} />}
+                          />
+                          <Card.Body>
+                            <div>个人介绍:{user.info}</div>
+                          </Card.Body>
+                        </Card>
+                        <WhiteSpace size="lg" />
+                      </div>
+                  )
+                })
+              }
+            </WingBlank>
+          </div>
+      )
     }
-    let userList = this.props.userList.filter((user, index) => user.username !== this.props.user.username)
-    return (
-        <div>
-          <WhiteSpace />
-          <WingBlank size="lg">
-            {
-              userList.map((user, index) => (
-                  <div key={index}>
-                    <WhiteSpace size="lg" />
-                    <Card onClick={() => this.handleClick(user)}>
-                      <Card.Header
-                          title={user.username}
-                          thumb={require(`../../images/headers/${user.header}.png`)}
-                          extra={<i className='iconfont icon-arrow-right-copy' style={{fontSize: '1rem'}} />}
-                      />
-                      <Card.Body>
-                        <div>个人介绍:{user.info}</div>
-                      </Card.Body>
-                    </Card>
-                    <WhiteSpace size="lg" />
-                  </div>
-              ))
-            }
-          </WingBlank>
-        </div>
-    )
+    return null
   }
 }
 
